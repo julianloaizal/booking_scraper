@@ -45,7 +45,10 @@ def main():
         room = 1
         children = 0
 
-        for  offset  in range(0, 1, 25):
+        lista = [offset for offset in range(0,200, 25)]
+
+
+        for  offset  in lista:
 
             page_url = f'https://www.booking.com/searchresults.es.html?checkin={checkin_date}&checkout={checkout_date}&selected_currency=COP&ss={destination}&ssne={destination}&ssne_untouched={destination}&lang=es&sb=1&src_elem=sb&src=searchresults&dest_type=city&group_adults={adult}&no_rooms={room}&group_children={children}&sb_travel_purpose=leisure&offset={offset}'
 
@@ -90,7 +93,7 @@ def main():
             #df.to_excel('hotels_list.xlsx', index=False) 
             df.to_csv('hotels_list.csv', index=False)
 
-        offset += 25 
+        
         
         browser.close()
             
