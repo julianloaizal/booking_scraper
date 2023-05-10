@@ -39,7 +39,7 @@ def main():
         # IMPORTANT: Change dates to future dates, otherwise it won't work
         checkin_date = '2023-05-23'
         checkout_date = '2023-05-24'
-        destination = (Lista["Nombre Municipio"][55])
+        destination = (Lista["Nombre Municipio"][61])
         destination = destination
         adult = 1
         room = 1
