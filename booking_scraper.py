@@ -22,7 +22,7 @@ This script will scrape the following information from booking.com:
 today = date.today()
 
 def municipios():
-    municipios = pd.read_csv(r"C:\Users\Julian\Documents\booking_scraper\municipios.csv")
+    municipios = pd.read_csv(r"D:\Documents\booking_scraper\municipios.csv")
     df = pd.DataFrame(municipios)
     Lista = {col: df[col].dropna().tolist() for col in df.columns}
     return Lista
@@ -37,15 +37,15 @@ def main():
     with sync_playwright() as p:
         
         # IMPORTANT: Change dates to future dates, otherwise it won't work
-        checkin_date = '2023-05-23'
-        checkout_date = '2023-05-24'
+        checkin_date = '2023-10-23'
+        checkout_date = '2023-10-24'
         destination = (Lista["Nombre Municipio"][61])
         destination = destination
-        adult = 1
+        adult = 2
         room = 1
         children = 0
 
-        lista = [offset for offset in range(0,200, 25)]
+        lista = [offset for offset in range(0,100, 25)]
 
 
         for  offset  in lista:
@@ -67,7 +67,10 @@ def main():
                 hotel_dict['score'] = hotel.locator('//div[@data-testid="review-score"]/div[1]').all_inner_texts()
                 hotel_dict['avg review'] = hotel.locator('//div[@data-testid="review-score"]/div[2]/div[1]').all_inner_texts()
                 hotel_dict['reviews count'] = hotel.locator('//div[@data-testid="review-score"]/div[2]/div[2]').all_inner_texts()
+                hotel_dict['comfort'] = hotel.locator('//a[@data-testid="secondary-review-score-link"]').all_inner_texts()
+                hotel_dict['distancia del centro'] = hotel.locator('//span[@data-testid="distance"]').all_inner_texts()
                 
+
             
                 
                 
@@ -80,7 +83,7 @@ def main():
             df["Municipio"]= destination
             df["url"]= page_url
             df["fecha_consulta"]= today
-            rute =r"C:\Users\Julian\Documents\booking_scraper\hotels_list.xlsx"
+            rute =r"D:\Documents\booking_scraper\hotels_list.xlsx"
             if os.path.exists(rute):
                 df1 = pd.read_excel(rute)
                 pd.concat([df1, df]).to_excel(rute, index=False)
