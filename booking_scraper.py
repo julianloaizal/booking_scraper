@@ -69,11 +69,12 @@ def main():
                 hotel_dict['reviews count'] = hotel.locator('//div[@data-testid="review-score"]/div[2]/div[2]').all_inner_texts()
                 hotel_dict['comfort'] = hotel.locator('//a[@data-testid="secondary-review-score-link"]').all_inner_texts()
                 hotel_dict['distancia del centro'] = hotel.locator('//span[@data-testid="distance"]').all_inner_texts()
+                hotel_dict['nivel de sostenibilidad'] = hotel.locator('//span[@data-testid="badge-sustainability"]').all_inner_texts()
+                hotel_dict['información habitación'] = hotel.locator('//div[@class="ccbf515d6e c07a747311"]//div[@role="link"]').all_inner_texts()
+                hotel_dict['Desayuno incluido'] = hotel.locator('//div[@class="ccbf515d6e c07a747311"]//span').all_inner_texts()
+                hotel_dict['Cancelación incluida'] = hotel.locator('//div[@class="ccbf515d6e c07a747311"]//strong').all_inner_texts()
                 
-
             
-                
-                
                 
 
                 hotels_list.append(hotel_dict)
