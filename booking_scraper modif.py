@@ -335,7 +335,8 @@ for col in cols:
 df['price'] = pd.to_numeric(df['price'].str.replace('COP','').str.strip())
 df['score'] = pd.to_numeric(df['score'].str.replace(",","."))
 df['reviews count'] = pd.to_numeric(df['reviews count'].str.replace(r'\b(comentario|comentarios)\b', '', regex=True))
-df['nivel de sostenibilidad'] = pd.to_numeric(df['nivel de sostenibilidad'].str.replace("Travel Sustainable Nivel ",""))
+# df['nivel de sostenibilidad'] = df['nivel de sostenibilidad'].str.replace("Travel Sustainable Nivel ","")
+df['nivel de sostenibilidad'] = df['nivel de sostenibilidad'].apply(extraer_numeros)
 df['Desayuno incluido'] = df['Desayuno incluido'].apply(desayuno)
 df['comfort'] = (df['comfort'].apply(extraer_numeros))
 df['Cancelación incluida'] = df['Cancelación incluida'].map({
@@ -457,7 +458,7 @@ df.drop(['distancia del centro','Origen_ref','origen','información habitación'
 
 # Se generan dos datasets, uno para Medellín y el otro para el resto de municipios
 df_med = df.loc[df['Municipio'] == 'MEDELLIN'].reset_index(drop=True)
-df_ant = df.loc[df['Municipio'] != 'MEDELLIN']
+df_ant = df.loc[df['Municipio'] != 'MEDELLIN'].reset_index(drop=True)
 
 # EXPORT
 
