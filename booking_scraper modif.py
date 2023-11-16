@@ -166,8 +166,8 @@ import re
 import unidecode
 
 # Se importan los DataFrames y se combinan
-df = pd.read_excel(r"C:\Users\DELL\Esteban\Web Scraping\booking_scraper\BORRAR_hotels_list_ensayo.xlsx")#("C:/Users/DELL/Esteban/Web Scraping/booking_scraper/python/hotels_list.xlsx")
-df_coord = pd.read_excel("C:/Users/DELL/Esteban/Web Scraping/booking_scraper/python/coordenadas.xlsx")
+df = pd.read_excel(r".\BORRAR_hotels_list_ensayo.xlsx")#("C:/Users/DELL/Esteban/Web Scraping/booking_scraper/python/hotels_list.xlsx")
+df_coord = pd.read_excel("./coordenadas.xlsx")
 df = df.merge(df_coord[['Código','Municipio','Subregión',"Latitud","Longitud"]],on = 'Municipio', how = 'left')
 
 # FUNCIONES
@@ -196,7 +196,7 @@ def extraer_numeros(valor):
         valor (str): El texto que contiene la etiqueta y el número.
 
     Returns:
-        float o None: El número decimal extraído del texto. Retorna None si no se encuentra un número válido.
+        float o nan: El número decimal extraído del texto. Retorna nan si no se encuentra un número válido.
     """
     # Utiliza una expresión regular para buscar números en el valor
     numeros = re.findall(r'\d+[,.]?\d*', valor)
@@ -207,7 +207,7 @@ def extraer_numeros(valor):
         numero = numeros[0].replace(',', '.')
         return float(numero)
     else:
-        return None
+        return np.nan
     
 def distancia_metros(valor):
     """
@@ -217,8 +217,8 @@ def distancia_metros(valor):
         valor (str): El texto que contiene el número con unidad.
 
     Returns:
-        float o None: Número correspondiente a la distancia en m.
-        Retorna None si no se encuentra un número con unidad válido.
+        float o nan: Número correspondiente a la distancia en m.
+        Retorna nan si no se encuentra un número con unidad válido.
     """
     # Utiliza una expresión regular para buscar números con unidad en el valor
     matches = re.findall(r'(\d+[,.]?\d*)\s*(km|m)', valor, re.IGNORECASE)
@@ -232,7 +232,7 @@ def distancia_metros(valor):
             numero *= 1000
         return numero
     else:
-        return None   
+        return np.nan
     
 def acomodacion(texto):
 
@@ -280,7 +280,7 @@ def baño(texto):
         texto (str): Corresponde al texto de información de la habitación.
 
     Returns:
-        int o nan: Retorna 0 en caso de especificar baño compartido, 1 para baño privado
+        int o np.nan: Retorna 0 en caso de especificar baño compartido, 1 para baño privado
                    y nan para valores sin información de baño.
     """
 
@@ -307,7 +307,7 @@ def dormitorios(texto):
     """
 
     if re.findall(r'(dormitorio|dormitorios)', texto, re.IGNORECASE):
-        return re.findall(r'\d', texto, re.IGNORECASE)
+        return int(re.findall(r'\d', texto, re.IGNORECASE))
     else:
         return ([np.nan])
     
@@ -335,7 +335,7 @@ for col in cols:
 df['price'] = pd.to_numeric(df['price'].str.replace('COP','').str.strip())
 df['score'] = pd.to_numeric(df['score'].str.replace(",","."))
 df['reviews count'] = pd.to_numeric(df['reviews count'].str.replace(r'\b(comentario|comentarios)\b', '', regex=True))
-df['nivel de sostenibilidad'] = df['nivel de sostenibilidad'].str.replace("Travel Sustainable Nivel ","")
+df['nivel de sostenibilidad'] = pd.to_numeric(df['nivel de sostenibilidad'].str.replace("Travel Sustainable Nivel ",""))
 df['Desayuno incluido'] = df['Desayuno incluido'].apply(desayuno)
 df['comfort'] = (df['comfort'].apply(extraer_numeros))
 df['Cancelación incluida'] = df['Cancelación incluida'].map({
@@ -421,37 +421,37 @@ df.drop(['distancia del centro','Origen_ref','origen','información habitación'
 
 # ASIGNAR TIPO DE DATOS A COLUMNAS
 
-df[['hotel',
-     'avg review',
-     'Municipio',
-     'url',
-     'Subregión']] = df[['hotel',
-                          'avg review',
-                          'Municipio',
-                          'url',
-                          'Subregión']].astype(str)
+# df[['hotel',
+#      'avg review',
+#      'Municipio',
+#      'url',
+#      'Subregión']] = df[['hotel',
+#                           'avg review',
+#                           'Municipio',
+#                           'url',
+#                           'Subregión']].astype(str)
 
-df[['price', 
-    'reviews count', 
-    'distancia origen m', 
-    'Desayuno incluido', 
-    'Cancelación incluida',
-    'Código',
-    'nivel de sostenibilidad']] = df[['price', 
-                                        'reviews count', 
-                                        'distancia origen m', 
-                                        'Desayuno incluido', 
-                                        'Cancelación incluida',
-                                        'Código',
-                                        'nivel de sostenibilidad']].astype(int)
+# df[['price', 
+#     'reviews count', 
+#     'distancia origen m', 
+#     'Desayuno incluido', 
+#     'Cancelación incluida',
+#     'Código',
+#     'nivel de sostenibilidad']] = df[['price', 
+#                                         'reviews count', 
+#                                         'distancia origen m', 
+#                                         'Desayuno incluido', 
+#                                         'Cancelación incluida',
+#                                         'Código',
+#                                         'nivel de sostenibilidad']].astype(int)
 
-df[['score', 
-    'comfort', 
-    'Latitud', 
-    'Longitud']] = df[['score', 
-                        'comfort', 
-                        'Latitud', 
-                        'Longitud']].astype(int)
+# df[['score', 
+#     'comfort', 
+#     'Latitud', 
+#     'Longitud']] = df[['score', 
+#                         'comfort', 
+#                         'Latitud', 
+#                         'Longitud']].astype(int)
 
 # SEPARACIÓN DATASETS
 
