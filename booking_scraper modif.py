@@ -29,7 +29,7 @@ today = date.today()
 # Lee el archivo de ingreso de municipios y lo convierte en un diccionario, 
 # con valor= nombre_columna y clave= valores_columna
 def municipios():
-    municipios = pd.read_csv(r"C:\Users\DELL\Esteban\Web Scraping\booking_scraper\municipios_2.csv") # --> Cambio a municipios_2 para ensayo
+    municipios = pd.read_csv(r".\municipios_2.csv") # --> Cambio a municipios_2 para ensayo
     df = pd.DataFrame(municipios)
     Lista = {col: df[col].dropna().tolist() for col in df.columns}
     return Lista
@@ -78,7 +78,7 @@ def main():
                 # context = browser.new_context()
                 # page = context.new_page()
                 page = browser.new_page(user_agent=ua) #puede usarse la línea anterior y en esta context en vez de browser para que se abran como pestañas
-                page.goto(page_url, timeout=60000) #Espera 60.000 ms (60 s) antes de decir que el navegador falló
+                page.goto(page_url, timeout=120000) #Espera 60.000 ms (60 s) antes de decir que el navegador falló
 
                 hotels = page.locator('//div[@data-testid="property-card"]').all()
 
@@ -133,7 +133,7 @@ def main():
                 df["Municipio"]= destination
                 df["url"]= page_url
                 df["fecha_consulta"]= today
-                rute =r"C:\Users\DELL\Esteban\Web Scraping\booking_scraper\BORRAR_hotels_list_ensayo.xlsx" # --------> Se modifica para ensayo
+                rute =r".\BORRAR_hotels_list_ensayo.xlsx" # --------> Se modifica para ensayo
                 if os.path.exists(rute):
                     df1 = pd.read_excel(rute)
                     pd.concat([df1, df]).to_excel(rute, index=False)
