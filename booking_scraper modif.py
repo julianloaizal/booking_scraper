@@ -417,7 +417,41 @@ df.reset_index(drop=True,inplace=True)
 # Se borran las columnas que ya no se necesitan
 
 df.columns
-df.drop(['distancia del centro','Origen_ref','origen','información habitación','fecha_consulta'],axis=1, inplace=True)
+df.drop(['distancia del centro','Origen_ref','origen','información habitación'],axis=1, inplace=True)
+
+# ASIGNAR TIPO DE DATOS A COLUMNAS
+
+df[['hotel',
+     'avg review',
+     'Municipio',
+     'url',
+     'Subregión']] = df[['hotel',
+                          'avg review',
+                          'Municipio',
+                          'url',
+                          'Subregión']].astype(str)
+
+df[['price', 
+    'reviews count', 
+    'distancia origen m', 
+    'Desayuno incluido', 
+    'Cancelación incluida',
+    'Código',
+    'nivel de sostenibilidad']] = df[['price', 
+                                        'reviews count', 
+                                        'distancia origen m', 
+                                        'Desayuno incluido', 
+                                        'Cancelación incluida',
+                                        'Código',
+                                        'nivel de sostenibilidad']].astype(int)
+
+df[['score', 
+    'comfort', 
+    'Latitud', 
+    'Longitud']] = df[['score', 
+                        'comfort', 
+                        'Latitud', 
+                        'Longitud']].astype(int)
 
 # SEPARACIÓN DATASETS
 
